@@ -2,6 +2,7 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+// const replaceTemplate = require('../final/modules/replaceTemplate');
 ///////////////////////////
 // =========== files =============
 // ------------ blocking code--------------
@@ -34,12 +35,29 @@ const url = require('url');
 
 ///////////////////////////////////////////////////////////////
 //============= SERVER ================
+//
+const replaceTemplate = (temp, product) => {
+  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
+  output = output.replace(/{%IMAGE%}/g, product.image);
+  output = output.replace(/{%PRICE%}/g, product.price);
+  output = output.replace(/{%FROM%}/g, product.from);
+  output = output.replace(/{%NUTRIENTS%}/g, product.nutrients);
+  output = output.replace(/{%QUANTITY%}/g, product.quantity);
+  output = output.replace(/{%DESCRIPTION%}/g, product.description);
+  output = output.replace(/{%ID%}/g, product.id);
+
+  if (!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic');
+  return output;
+}
+const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
 
 // Reading the file inside the request handler is inefficient
 // because the file will be read from disk on every request.
 // Since this data is static, it's better to read it once when
 // the server starts using readFileSync and reuse it.
-const data = fs.readFileSync(`./dev-data/data.json`, 'utf-8');
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
 // first we create the server and second we start the server
@@ -48,10 +66,19 @@ const server = http.createServer((req, res) => {
   // each time we hit the server this function we will called and the callback will have access
   // ==> so here is sending back a simple response to the clint 
   const pathName = req.url;
+  //------- overview ---------
   if (pathName === '/' || pathName === '/overview') {
-    res.end('this is the OVERVIEW page');
+    // the map method it's accept a callback and applies that function to each element of an array,then return a new array
+    res.writeHead(200, { 'content-type': 'text/html' })
+    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
+    console.log(cardsHtml);
+    res.end(tempOverview);
+
+    //------- product ---------
   } else if (pathName === '/product') {
     res.end('this is the PRODUCT page');
+
+    //------- error page ---------
   } else if (pathName === '/api') {
     res.writeHead(200, { 'content-type': 'application/json' });
     // console.log(data);

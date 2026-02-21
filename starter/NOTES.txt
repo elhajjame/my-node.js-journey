@@ -1,0 +1,57 @@
+--------------- NPM ----------------
+npm : node package manager is a command line interface app that automatically comes 
+included with node JS which use to manage and install open source packages
+this packages they usually comes from the package REPO
+
+What is a Package?
+A package is a reusable piece of code (a library, tool, or framework) that solves a specific problem.
+
+Examples:
+express → build servers
+lodash → utility functions
+nodemon → auto-restart server
+
+
+so the two types of packages that we can install are simple dependencies or devDependencies
+❌ simple dependencies VS devDependencies
+dependencies these are the packages your app needs in production
+++ if u remove them your app will break ❌❌
+
+📌 Examples:
+express → to create the server
+mongoose → to connect to database
+react → to build the UI
+
+2️⃣ DevDependencies (Development Dependencies)
+packages use only while developing 
+they helps to write codes, test or auto-restart the app
+  and the app can run without them in production.
+  📌 Examples:
+
+nodemon → auto restart server
+eslint → check errors
+prettier → format code
+jest → testing
+
+✅ dependencies → app needs them to work
+🛠 devDependencies → developer needs them to build the app
+
+--------------------------slugify package (Dependencies) --------------------------
+slugify is a simple node.js package that converts strings into URL-friendly
+
+📌 A slug is:
+✅ lowercase
+✅ spaces replaced with -
+✅ special characters removed
+
+// Fresh Avocados From Morocco ===> fresh-avocados-from-morocco
+
+--------------------------nodemon package (DevDependencies) --------------------------
+is a development tool that automatically restart node js application whenever we saved the file
+
+---------------------------
+we have an global packages and local package
+that means if u install a local it will work only on this project 
+but if global it will work on each project on this device 
+for Examples we can do it with nodemon and install it globally in every project on on this machine will access to it 
+to do that ===> npm i -g nodemon (npm install global nodemon)

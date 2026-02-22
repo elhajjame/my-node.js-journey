@@ -2,6 +2,8 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+const slugify = require('slugify');
+console.log(slugify);
 
 const replaceTemplate = require('./module/replaceTemplate');
 // const replaceTemplate = require('../final/modules/replaceTemplate');
@@ -51,6 +53,9 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 // first we create the server and second we start the server
+
+const slugs = dataObj.map(el => slugify(el.productName, { lower: true, replacement: '-' }));
+
 const server = http.createServer((req, res) => {
   // this the res that we going to send
   // each time we hit the server this function we will called and the callback will have access
